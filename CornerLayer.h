@@ -10,10 +10,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CornerLayer : CAShapeLayer
-@property (nonatomic,assign)CGFloat mCornerRadius;
 @property (nonatomic,strong)UIColor *mFillColor;
+@property (nonatomic,assign)CGSize mCornerRadii;
 
-- (void)fof_didMoveToSuperView:(UIView *)superview;
+- (void)fof_addRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii frameRect:(CGRect)rect;
 @end
 
 NS_ASSUME_NONNULL_END

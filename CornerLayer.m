@@ -7,22 +7,30 @@
 
 #import "CornerLayer.h"
 #import <UIKit/UIKit.h>
+
+@interface CornerLayer()
+@property (assign,nonatomic)UIRectCorner mCorners;
+@end
+
 @implementation CornerLayer
 
 -(void)drawInContext:(CGContextRef)ctx{
-    CGRect superRect = self.superlayer.bounds;
-    UIBezierPath *path1 = [UIBezierPath bezierPathWithRoundedRect:superRect cornerRadius:self.mCornerRadius];
-    UIBezierPath *path2 = [UIBezierPath bezierPathWithRect:superRect];
-    [path1 appendPath:path2];
-    self.path = path1.CGPath;
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:self.mCorners cornerRadii:self.mCornerRadii];
+    self.path = path.CGPath;
     self.strokeColor = [[UIColor clearColor] CGColor];//线条颜色
     self.lineWidth = 1;
     self.fillRule = kCAFillRuleEvenOdd;
-    self.fillColor = self.mFillColor.CGColor;//填充颜色
+    if (self.mFillColor) {
+        self.fillColor = self.mFillColor.CGColor;//填充颜色
+    }else{
+        self.fillColor = [UIColor whiteColor].CGColor;
+    }
 }
--(void)fof_didMoveToSuperView:(UIView *)superview{
-    self.frame = superview.bounds;
-    [superview.layer addSublayer:self];
+- (void)fof_addRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii frameRect:(CGRect)rect{
+    self.frame = rect;
+    self.mCornerRadii = cornerRadii;
+    self.mCorners = corners;
     [self setNeedsDisplay];
 }
+
 @end
